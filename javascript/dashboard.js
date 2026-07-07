@@ -18,7 +18,9 @@ const NAV = [
    on the page ID.
    ================================================================= */
 
-function pageUrl(id) { return `../${id}/${id}.html`; }
+function pageUrl(id) {
+   return id + ".html";
+}
 
 /* =================================================================
    TOPBAR HTML GENERATOR
