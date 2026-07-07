@@ -59,7 +59,7 @@ try{document.documentElement.setAttribute("data-theme",localStorage.getItem("mt-
     if(!u||!p){ err.textContent="Enter both a username and password to continue."; err.classList.remove("hidden"); return; }
     if(u===AUTH.username && p===AUTH.password){
       try{ localStorage.setItem("mt-auth","1"); }catch(e){}
-      location.href="dashboard/dashboard.html";
+      location.href="dashboard.html";
     }else{
       err.textContent="Incorrect username or password. Try the demo account below.";
       err.classList.remove("hidden");
