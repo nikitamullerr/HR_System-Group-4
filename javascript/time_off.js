@@ -1,5 +1,6 @@
-/* SHELL — Topbar and navigation */
+/*topbar and navigation */
 
+// Defines all main menu items. Each object has an id (used for the HTML filename)
 const NAV = [
   { id: "dashboard", label: "Dashboard" },
   { id: "employees", label: "Employees" },
@@ -9,16 +10,21 @@ const NAV = [
   { id: "performance_review", label: "Performance Reviews" },
 ];
 
+// Helper: returns the URL for a given page ID (appends ".html").
 function pageUrl(id) {
   return id + ".html";
 }
 
+// Generates the HTML for the top bar based on the currently active page.
 function topbarHTML(active) {
   const logo = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-5h4v5"/></svg>';
+
+  // Build navigation links, marking the active one with "active" class.
   const links = NAV.map(function(n) {
     return '<a class="topnav-item ' + (n.id === active ? "active" : "") + '" href="' + pageUrl(n.id) + '">' + n.label + '</a>';
   }).join("");
 
+// Return the complete topbar HTML.
   return `
     <a class="tb-brand" href="${pageUrl('dashboard')}"><span class="tb-logo">${logo}</span><span class="tb-name">ModernTech HR</span></a>
     <nav class="topnav">${links}</nav>
@@ -44,7 +50,8 @@ var active = document.body.dataset.page || "dashboard";
 var tb = document.getElementById("topbar");
 if (tb) tb.innerHTML = topbarHTML(active);
 
-// ---- Create mobile navigation ----
+// Create mobile navigation 
+// Creates a sliding mobile navigation menu that appears on hamburger click.
 function createMobileNav() {
   var nav = document.createElement('div');
   nav.className = 'mobile-nav';
@@ -68,7 +75,7 @@ function createMobileNav() {
 
 var mobileNav = createMobileNav();
 
-// ---- Toggle mobile nav ----
+// Toggle mobile nav on hamburger button click
 var hamburgerBtn = document.getElementById('hamburgerBtn');
 if (hamburgerBtn) {
   hamburgerBtn.addEventListener('click', function(e) {
@@ -77,14 +84,14 @@ if (hamburgerBtn) {
   });
 }
 
-// ---- Close mobile nav when clicking outside ----
+//  Close mobile nav when clicking outside 
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.hamburger-btn') && !e.target.closest('.mobile-nav')) {
     mobileNav.classList.remove('open');
   }
 });
 
-// ---- Close mobile nav on scroll ----
+// Close mobile nav on scroll 
 var scrollTimeout;
 window.addEventListener('scroll', function() {
   clearTimeout(scrollTimeout);
@@ -93,7 +100,8 @@ window.addEventListener('scroll', function() {
   }, 100);
 });
 
-// ---- Theme toggle ----
+// Theme toggle 
+// Saves/reads the user's theme preference in localStorage.
 var THEME_KEY = "mt-theme";
 
 function currentTheme() {
@@ -105,6 +113,8 @@ function currentTheme() {
   }
 }
 
+// Applies the given theme ("light" or "dark") by setting a data attribute
+// on the root element, and updates the icon of the theme button.
 function applyTheme(t) {
   document.documentElement.setAttribute("data-theme", t);
   try { 
@@ -113,6 +123,7 @@ function applyTheme(t) {
   updateThemeIcon(t);
 }
 
+// Changes the icon inside the theme button to reflect the current mode.
 function updateThemeIcon(t) {
   var btn = document.getElementById("themeBtn");
   if (!btn) return;
@@ -134,7 +145,8 @@ if (themeBtn) {
   });
 }
 
-/* ---- Profile menu ---- */
+/* Profile menu */
+// Clicking the profile avatar toggles the dropdown menu.
 var profileBtn = document.getElementById("profileBtn");
 if (profileBtn) {
   profileBtn.addEventListener("click", function(e) {
@@ -151,35 +163,34 @@ if (goProfileBtn) {
   });
 }
 
+// Logout button redirects to the login page (index.html).
 var logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", function() { 
-    // FIXED: Changed from ../index.html to index.html
     location.href = "index.html"; 
   });
 }
 
-document.addEventListener("click", function() {
+// Close the profile menu when clicking elsewhere on the page.
+document.addEventListener("click", function(e) {
   var menu = document.getElementById("profileMenu");
   if (menu) menu.classList.remove("show");
 });
 
 
-/* =================================================================
-   DATA — employee records now live in JSON files (see loadData())
-   instead of being hardcoded here. Everything else is unchanged.
-   ================================================================= */
+/* DATA – employee records are loaded from JSON files.
+   The global arrays ATTENDANCE_LEAVE, PAYROLL, EMP_META are
+   populated via loadData(). */
 
 // Filled in by loadData() once the JSON files have loaded.
 var ATTENDANCE_LEAVE = [];
 var PAYROLL = {};
 var EMP_META = {};
 
-
-/* ---- Load dummy data from JSON files ---- */
+/* Load dummy data from JSON files  */
 async function loadData() {
   try {
-    // Try to load from JSON files - note the correct filename is attendance.json
+    // Try to load from JSON files 
     var [attRes, payRes, metaRes] = await Promise.all([
       fetch("data/attendance.json"),
       fetch("data/payroll_data.json"),
@@ -218,6 +229,7 @@ async function loadData() {
   }
 }
 
+// Static department and leave type mappings (for colours and labels).
 var DEPARTMENTS = [
   { name: "Engineering", color: "#1d4ed8" },
   { name: "Sales", color: "#0ea5e9" },
@@ -230,11 +242,13 @@ var DEPARTMENTS = [
   { name: "Design", color: "#7c3aed" },
 ];
 
+// Build a fast lookup for department colours.
 var DEPT_COLOR = {};
 DEPARTMENTS.forEach(function(d) { 
   DEPT_COLOR[d.name] = d.color; 
 });
 
+// Leave types and their associated colours
 var LEAVE_TYPES = {
   "Sick Leave": "#10b981",
   "Vacation": "#f59e0b",
@@ -248,18 +262,13 @@ var LEAVE_TYPES = {
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-// "YYYY-MM-DD" -> {y, m (0-based), d}
+// Helper to parse a "YYYY-MM-DD" string into {y, m (0‑based), d}.
 function parseDate(s) {
   var parts = s.split("-").map(Number);
   return { y: parts[0], m: parts[1] - 1, d: parts[2] };
 }
 
-
-/* =================================================================
-   BUILD EMPLOYEES — turn the raw attendance/leave records into the
-   employee objects the rest of the app renders.
-   ================================================================= */
-
+/* Build employee objects from the raw attendance and payroll data. */
 function buildEmployees() {
   if (!ATTENDANCE_LEAVE || ATTENDANCE_LEAVE.length === 0) {
     console.warn('No attendance data available');
@@ -274,12 +283,13 @@ function buildEmployees() {
     var first = nameParts[0];
     var last = nameParts.slice(1).join(" ");
 
-    // Currently on leave if they have an approved leave request in July 2025.
+    // Determine if the employee is currently on leave (any approved request in July 2025).
     var onLeave = rec.leaveRequests && rec.leaveRequests.some(function(l) {
       var dt = parseDate(l.date);
       return l.status === "Approved" && dt.y === 2025 && dt.m === 6;
     });
 
+    // Build the employee object with all relevant fields.
     return {
       id: id,
       name: rec.name,
@@ -301,12 +311,7 @@ function buildEmployees() {
   });
 }
 
-
-/* =================================================================
-   STATE — populated by initState() once loadData() has resolved
-   (kept as one stable object so window.state below stays valid).
-   ================================================================= */
-
+/*  STATE – global application state for the Time Off page. It is initialised by initState() after data is loaded. */
 var state = {
   employees: [],
   requests: [],
@@ -317,17 +322,19 @@ var state = {
   calYear: 2025,
 };
 
+// Builds employees from raw data, then splits leave requests into
+// pending and approved lists, storing them in state.
 function initState() {
   state.employees = buildEmployees();
   
   console.log('Building employees from:', ATTENDANCE_LEAVE.length, 'records');
 
-  // Split each employee's leave requests into "pending" vs "approved" (booked).
   var reqId = 0;
   var leaveId = 0;
   var requests = [];
   var leave = [];
 
+  // Iterate over each employee and collect their leave requests.
   state.employees.forEach(function(e) {
     if (e.leaveRequests && e.leaveRequests.length > 0) {
       e.leaveRequests.forEach(function(l) {
@@ -352,14 +359,13 @@ function initState() {
   });
 }
 
-
-/* =================================================================
-   UI HELPERS
-   ================================================================= */
+/*  UI HELPERS - DOM shortcuts, toast notifications, modal management,
+   and utilities for leave operations. */
 
 function $(s) { return document.querySelector(s); }
 function $$(s) { return Array.from(document.querySelectorAll(s)); }
 
+// Shows a transient toast message at the bottom of the screen.
 function toast(msg) {
   var t = document.getElementById("toast");
   if (!t) return;
@@ -371,6 +377,7 @@ function toast(msg) {
   }, 2200);
 }
 
+// Opens a modal dialog with the given title, body HTML, and footer HTML.
 function openModal(title, bodyHTML, footHTML) {
   var modal = document.getElementById("modal");
   if (!modal) return;
@@ -386,14 +393,14 @@ function closeModal() {
   document.getElementById("modalBg").classList.remove("show");
 }
 
+// Computes the next available ID for a new leave entry.
 function nextLeaveId() {
   return state.leave.reduce(function(max, l) { 
     return Math.max(max, l.id); 
   }, 0) + 1;
 }
 
-// Moves a pending request into approved leave (if approved) and removes it
-// from the pending list either way. Returns the request that was actioned.
+// Moves a pending request into approved leave (if approved) and removes it from the pending list either way. Returns the request that was actioned.
 function applyLeaveDecision(id, approve) {
   var r = state.requests.find(function(x) { return x.id === id; });
   if (!r) return null;
@@ -405,25 +412,28 @@ function applyLeaveDecision(id, approve) {
   return r;
 }
 
+//returns the color for a given leave type
 function leaveColor(type) {
   return state.leaveTypes[type] || "#64748b";
 }
 
+// Returns all approved leave entries on a specific date.
 function leaveOn(year, month, day) {
   return state.leave.filter(function(l) { 
     return l.year === year && l.month === month && l.day === day; 
   });
 }
 
+// Returns a formatted date label for a leave request.
 function reqDateLabel(r) {
   var m = months[r.month] || "";
   return r.endDay ? r.day + '–' + r.endDay + ' ' + m + ' ' + r.year : r.day + ' ' + m + ' ' + r.year;
 }
 
 
-/* =================================================================
-   RENDER — Time Off page
-   ================================================================= */
+/* RENDER – Time Off page.
+   This is the main rendering function that draws either the pending
+   requests list or the leave calendar based on state.timeoffTab. */
 
 function renderTimeoff() {
   var main = document.getElementById("main");
@@ -432,6 +442,7 @@ function renderTimeoff() {
     return;
   }
 
+  // Build the outer page structure.
   main.innerHTML = 
     '<div class="page-head">' +
       '<div class="eyebrow">People</div>' +
@@ -461,7 +472,8 @@ function renderTimeoff() {
   }
 }
 
-/* ---- Pending requests tab ---- */
+/* Pending requests tab */
+// Renders a list of pending leave requests with Approve/Deny buttons.
 function renderPending() {
   if (!state.requests || state.requests.length === 0) {
     return '<div class="req-card"><div class="empty">No pending requests. You are all caught up!</div></div>';
@@ -495,20 +507,24 @@ function wirePending() {
   });
 }
 
-/* ---- Leave calendar tab ---- */
+/* Leave calendar tab (responsive + popup) */
+// Renders a monthly grid. On desktop, chips appear; on mobile, chips are hidden and cells are larger for easy tapping. Clicking any day opens a modal.
 function renderCalendar() {
   var y = state.calYear;
   var m = state.calMonth;
-  var first = new Date(y, m, 1).getDay();
-  var days = new Date(y, m + 1, 0).getDate();
+  var first = new Date(y, m, 1).getDay(); // day of week for the 1st (0 = Sunday)
+  var days = new Date(y, m + 1, 0).getDate(); // total days in month
 
   var cells = "";
+  // Empty cells before the 1st.
   for (var i = 0; i < first; i++) {
     cells += '<div class="cal-cell muted"></div>';
   }
 
+  // Build each day cell.
   for (var d = 1; d <= days; d++) {
     var entries = leaveOn(y, m, d);
+    // Create coloured chips for up to 3 leave entries (desktop only).
     var chips = entries.slice(0, 3).map(function(l) {
       return '<span class="chip" style="background:' + leaveColor(l.type) + ';font-size:10px;padding:2px 6px;border-radius:3px;color:#fff;display:inline-block;margin:1px 0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + l.name + ' — ' + l.type + '">' +
         l.name.split(" ")[0] + ' · ' + l.type.split(" ")[0] +
@@ -519,30 +535,78 @@ function renderCalendar() {
     cells += '<div class="cal-cell clickable" data-day="' + d + '" style="' + (entries.length ? "background:rgba(var(--primary-rgb,59,130,246),0.05)" : "") + '">' +
       '<span class="cal-num">' + d + '</span>' +
       chips +
-      (hasMore ? '<span style="font-size:9px;color:var(--muted)">+' + (entries.length - 3) + ' more</span>' : "") +
+      (hasMore ? '<span class="more" style="font-size:9px;color:var(--muted)">+' + (entries.length - 3) + ' more</span>' : "") +
     '</div>';
   }
 
+  // Day-of-week headers.
   var dows = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map(function(d) { 
     return '<div class="dow">' + d + '</div>'; 
   }).join("");
 
-  return '<div>' +
-    '<div class="cal-head">' +
-      '<div style="display:flex;gap:8px;align-items:center">' +
-        '<button class="cal-nav" data-cal="prev">‹</button>' +
-        '<button class="cal-nav" data-cal="next">›</button>' +
-        '<button class="btn line sm" data-cal="today">Today</button>' +
+  // Responsive styles – hides chips on mobile, makes cells touch-friendly.
+  var style = `
+    <style>
+      .calendar-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 12px;
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        min-width: 280px;
+      }
+      /* On mobile, hide chips and "more" indicators */
+      @media (max-width: 600px) {
+        .cal-cell .chip,
+        .cal-cell .more {
+          display: none;
+        }
+        .cal-cell {
+          min-height: 48px;
+          padding: 4px 2px;
+          justify-content: center;
+        }
+        .cal-num {
+          font-size: 15px;
+        }
+        .dow {
+          font-size: 10px;
+          padding: 4px 0;
+        }
+        .cal-head .mname {
+          font-size: 16px;
+        }
+        .cal-nav, .btn.sm {
+          font-size: 12px;
+          padding: 4px 8px;
+        }
+      }
+    </style>
+  `;
+
+  // Return the complete calendar HTML (wrapper, header, grid, hint).
+  return style +
+    '<div class="calendar-wrapper">' +
+      '<div class="cal-head">' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          '<button class="cal-nav" data-cal="prev">‹</button>' +
+          '<button class="cal-nav" data-cal="next">›</button>' +
+          '<button class="btn line sm" data-cal="today">Today</button>' +
+        '</div>' +
+        '<span class="mname">' + MONTHS_LONG[m] + ' ' + y + '</span>' +
+        '<span style="width:36px"></span>' +
       '</div>' +
-      '<span class="mname">' + MONTHS_LONG[m] + ' ' + y + '</span>' +
-      '<span style="width:36px"></span>' +
-    '</div>' +
-    '<div class="cal-grid">' + dows + cells + '</div>' +
-    '<p style="color:var(--muted);font-size:13px;margin-top:10px"> Click any day to add or remove leave.</p>' +
-  '</div>';
+      '<div class="cal-grid">' + dows + cells + '</div>' +
+      '<p style="color:var(--muted);font-size:13px;margin-top:10px"> Click any day to add or remove leave.</p>' +
+    '</div>';
 }
 
+// Attaches event handlers for calendar navigation and day clicks.
 function wireCalendar() {
+  // Navigation buttons: prev, next, today.
   document.querySelectorAll("[data-cal]").forEach(function(btn) {
     btn.onclick = function() {
       var action = btn.dataset.cal;
@@ -561,6 +625,7 @@ function wireCalendar() {
     };
   });
 
+  // Clicking a day cell opens the day editor modal.
   document.querySelectorAll(".cal-cell.clickable").forEach(function(cell) {
     cell.onclick = function() { 
       openDay(state.calYear, state.calMonth, parseInt(cell.dataset.day)); 
@@ -568,7 +633,8 @@ function wireCalendar() {
   });
 }
 
-/* ---- Day editor modal ---- */
+/*  Day editor modal (fixed: no "undefined")*/
+// Opens a modal that shows all leave entries for a specific day, allows removing entries, and adding new ones.
 function openDay(year, month, day) {
   function getBody() {
     var entries = leaveOn(year, month, day);
@@ -576,6 +642,7 @@ function openDay(year, month, day) {
       return '<option value="' + t + '">' + t + '</option>'; 
     }).join("");
 
+    // List of existing leave entries with remove buttons.
     var list = entries.length
       ? entries.map(function(l) {
           return '<div class="line" style="padding:6px 0">' +
@@ -588,11 +655,12 @@ function openDay(year, month, day) {
         }).join("")
       : '<p style="color:var(--muted);font-size:14px;padding:6px 0">No leave booked on this day.</p>';
 
-    return 
+    return (
       '<div style="margin-bottom:12px">' + list + '</div>' +
       '<label style="font-weight:600;font-size:14px;display:block;margin-top:12px">Add leave</label>' +
       '<input class="field" id="d_name" placeholder="Employee name" style="margin-bottom:8px">' +
-      '<select class="select" id="d_type" style="width:100%">' + typeOptions + '</select>';
+      '<select class="select" id="d_type" style="width:100%">' + typeOptions + '</select>'
+    );
   }
 
   openModal(
@@ -601,6 +669,7 @@ function openDay(year, month, day) {
     '<button class="btn ghost" id="mclose">Close</button><button class="btn green" id="dAdd">+ Add leave</button>'
   );
 
+  // Refresh the modal content after adding/removing an entry.
   function refreshModal() {
     var bodyEl = document.querySelector(".mbody");
     if (bodyEl) {
@@ -609,9 +678,11 @@ function openDay(year, month, day) {
     }
   }
 
+  // Wire up events for the newly opened modal.
   wireModalEvents(year, month, day, refreshModal);
 }
 
+// Binds events inside the day editor modal: close, add, remove.
 function wireModalEvents(year, month, day, refreshFn) {
   var closeBtn = document.getElementById("mclose");
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
@@ -632,6 +703,7 @@ function wireModalEvents(year, month, day, refreshFn) {
         return;
       }
 
+      // Prevent duplicate entries on the same day.
       var exists = state.leave.some(function(l) {
         return l.name === name && l.type === type && l.year === year && l.month === month && l.day === day;
       });
@@ -640,6 +712,7 @@ function wireModalEvents(year, month, day, refreshFn) {
         return;
       }
 
+      // Add the new leave entry.
       state.leave.push({ id: nextLeaveId(), name: name, type: type, year: year, month: month, day: day });
       refreshFn();
       renderTimeoff();
@@ -660,9 +733,7 @@ function wireModalEvents(year, month, day, refreshFn) {
 }
 
 
-/* =================================================================
-   BOOT
-   ================================================================= */
+/* boot */
 
 document.addEventListener("DOMContentLoaded", async function() {
   // Close the modal via backdrop click or Escape.
@@ -673,6 +744,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
   }
 
+  // Load data (JSON or sample), initialise state, and render the page.
   await loadData();
   initState();
   renderTimeoff();
@@ -682,6 +754,6 @@ document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") closeModal();
 });
 
-// Exposed globally in case other pages/scripts need to read or re-render state.
+// Expose some globals so other pages/scripts can interact with the state.
 window.renderTimeoff = renderTimeoff;
 window.state = state;
