@@ -5,10 +5,10 @@
 const NAV = [ 
   {id:"dashboard", label:"Dashboard"},
   {id:"employees", label:"Employees"},
-  {id:"timeoff", label:"Time Off Management"},
+  {id:"time_off", label:"Time Off Management"},
   {id:"attendance", label:"Attendance Management"},
-  {id:"payroll", label:"Payroll and Payslips"},
-  {id:"reviews", label:"Performance Reviews"},
+  {id:"payroll_payslips", label:"Payroll and Payslips"},
+  {id:"performance_reviews", label:"Performance Reviews"},
 ];
 
 /* =================================================================
