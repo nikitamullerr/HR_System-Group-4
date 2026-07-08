@@ -192,9 +192,9 @@ async function loadData() {
   try {
     // Try to load from JSON files 
     var [attRes, payRes, metaRes] = await Promise.all([
-      fetch("data/attendance.json"),
-      fetch("data/payroll_data.json"),
-      fetch("data/employee_info.json"),
+      fetch("attendance.json"),
+      fetch("payroll_data.json"),
+      fetch("employee_info.json"),
     ]);
     
     if (!attRes.ok || !payRes.ok || !metaRes.ok) {
@@ -202,7 +202,7 @@ async function loadData() {
       ATTENDANCE_LEAVE = getSampleAttendance();
       PAYROLL = getSamplePayroll();
       EMP_META = getSampleMeta();
-      toast("Using sample data - JSON files not found");
+      toast("JSON files not found");
       return;
     }
 

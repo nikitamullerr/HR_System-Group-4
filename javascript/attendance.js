@@ -319,9 +319,9 @@ function buildState() {
 async function loadData() {
   try {
     var [attRes, empRes, payRes] = await Promise.all([
-      fetch("data/attendance.json"),
-      fetch("data/employee_info.json"),
-      fetch("data/payroll_data.json")
+      fetch("attendance.json"),
+      fetch("employee_info.json"),
+      fetch("payroll_data.json")
     ]);
 
     if (!attRes.ok || !empRes.ok || !payRes.ok) {
