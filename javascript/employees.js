@@ -2,8 +2,8 @@ console.log("Employees JS Loaded");
 
 /* ==================================================
    NAVIGATION
-   Creates the navigation menu structure and handles
-   generating links for different HR system pages.
+   Creates and manages the main navigation bar
+   used throughout the HR system.
 ================================================== */
 
 const NAV = [
@@ -15,14 +15,15 @@ const NAV = [
     { id: "performance_review", label: "Performance Reviews" }
 ];
 
-// Creates the URL path for each navigation page
+// Creates page URL from page ID
 function pageUrl(id) {
     return `${id}.html`;
 }
 
-// ================================
-// SVG ICONS
-// ================================
+/* ==================================================
+   SVG ICONS
+================================================== */
+
 function buildingIcon() {
     return `
         <svg
@@ -105,87 +106,104 @@ function menuIcon() {
     `;
 }
 
-// Generates the HTML structure for the top navigation bar
+/* ==================================================
+   TOPBAR
+   Generates the page navigation bar.
+================================================== */
+
 function topbarHTML(active) {
 
-    // Creates navigation links and highlights the active page
     const links = NAV.map(item => `
+
         <a
             class="topnav-item ${item.id === active ? "active" : ""}"
             href="${pageUrl(item.id)}"
         >
             ${item.label}
         </a>
+
     `).join("");
 
-    // Returns the complete topbar layout
     return `
-        <a class="tb-brand" href="${pageUrl("dashboard")}">
-            <span class="tb-logo">
-    ${buildingIcon()}
-</span>
 
-            <span class="tb-name">ModernTech HR</span>
+        <a
+            class="tb-brand"
+            href="${pageUrl("dashboard")}"
+        >
+
+            <span class="tb-logo">
+                ${buildingIcon()}
+            </span>
+
+            <span class="tb-name">
+                ModernTech HR
+            </span>
+
         </a>
 
         <nav class="topnav">
             ${links}
         </nav>
 
-       <button class="hamburger-btn" id="hamburgerBtn">
-    ${menuIcon()}
-</button>
+        <button
+            class="hamburger-btn"
+            id="hamburgerBtn"
+        >
+            ${menuIcon()}
+        </button>
 
         <div class="top-spacer"></div>
 
         <div class="top-icons">
 
             <button
-    class="icon-btn"
-    id="themeBtn"
->
-    ${sunIcon()}
-</button>
+                class="icon-btn"
+                id="themeBtn"
+            >
+                ${sunIcon()}
+            </button>
 
             <button class="acct">
 
-                <span class="av">HA</span>
+                <span class="av">
+                    HA
+                </span>
 
                 <span class="who">
+
                     <b>HR Admin</b>
-                    <span>HR Manager</span>
+
+                    <span>
+                        HR Manager
+                    </span>
+
                 </span>
 
             </button>
 
         </div>
+
     `;
 }
 
-
-
-// Gets the current page name from the body data attribute
+// Determine current page
 const activePage =
     document.body.dataset.page || "employees";
 
-// Finds the topbar element where navigation will be inserted
+// Render topbar
 const topbar =
     document.getElementById("topbar");
 
-// Inserts the generated navigation into the page
 if (topbar) {
     topbar.innerHTML =
         topbarHTML(activePage);
 }
 
-
 /* ==================================================
-   MOBILE NAV
-   Creates and controls the mobile navigation menu
-   for smaller screen devices.
+   MOBILE NAVIGATION
+   Creates and controls the mobile menu.
 ================================================== */
 
-// Creates the mobile navigation menu dynamically
 function createMobileNav() {
 
     const nav =
@@ -194,7 +212,6 @@ function createMobileNav() {
     nav.className = "mobile-nav";
     nav.id = "mobileNav";
 
-    // Adds navigation links to the mobile menu
     nav.innerHTML = NAV.map(item => `
 
         <a
@@ -206,21 +223,17 @@ function createMobileNav() {
 
     `).join("");
 
-    // Adds the mobile navigation menu to the page
     document.body.appendChild(nav);
 
     return nav;
 }
 
-// Creates the mobile navigation element
 const mobileNav =
     createMobileNav();
 
-// Finds the hamburger menu button
 const hamburgerBtn =
     document.getElementById("hamburgerBtn");
 
-// Opens and closes the mobile navigation when clicked
 if (hamburgerBtn) {
 
     hamburgerBtn.addEventListener("click", e => {
@@ -233,7 +246,6 @@ if (hamburgerBtn) {
 
 }
 
-// Closes the mobile menu when clicking outside of it
 document.addEventListener("click", e => {
 
     if (
@@ -247,16 +259,12 @@ document.addEventListener("click", e => {
 
 });
 
-
 /* ==================================================
-   THEME
-   Handles switching between light and dark mode
-   and saving the selected theme.
+   THEME MANAGEMENT
 ================================================== */
 
 const THEME_KEY = "mt-theme";
 
-// Retrieves the saved theme preference from storage
 function currentTheme() {
 
     try {
@@ -266,32 +274,13 @@ function currentTheme() {
             "light"
         );
 
-    } catch {
+    }
+
+    catch {
 
         return "light";
 
     }
-
-}
-
-// Applies the saved theme when the page loads
-function applyTheme(theme) {
-
-    document.documentElement.setAttribute(
-        "data-theme",
-        theme
-    );
-
-    try {
-
-        localStorage.setItem(
-            THEME_KEY,
-            theme
-        );
-
-    } catch {}
-
-    updateThemeIcon(theme);
 
 }
 
@@ -306,84 +295,333 @@ function updateThemeIcon(theme) {
         theme === "dark"
             ? sunIcon()
             : moonIcon();
+
 }
 
+function applyTheme(theme) {
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        theme
+    );
+
+    try {
+
+        localStorage.setItem(
+            THEME_KEY,
+            theme
+        );
+
+    }
+
+    catch {}
+
+    updateThemeIcon(theme);
+
+}
 
 /* ==================================================
-   ELEMENTS
-   Stores references to HTML elements used by JavaScript
-   for updating content and handling user actions.
+   EMPLOYEE DATA
+   Embedded directly so the page works with
+   Live Server and File Explorer.
 ================================================== */
 
-const employeeContainer =
-    document.getElementById("employeeContainer");
+let employees = [
 
-const searchInput =
-    document.getElementById("searchInput");
+    {
+        employeeId: 1,
+        name: "Sibongile Nkosi",
+        position: "Software Engineer",
+        department: "Development",
+        salary: 70000,
+        employmentHistory:
+            "Joined in 2015, promoted to Senior in 2018",
+        contact:
+            "sibongile.nkosi@moderntech.com"
+    },
 
-const departmentFilter =
-    document.getElementById("departmentFilter");
+    {
+        employeeId: 2,
+        name: "Lungile Moyo",
+        position: "HR Manager",
+        department: "HR",
+        salary: 80000,
+        employmentHistory:
+            "Joined in 2013, promoted to Manager in 2017",
+        contact:
+            "lungile.moyo@moderntech.com"
+    },
 
-const totalEmployees =
-    document.getElementById("totalEmployees");
+    {
+        employeeId: 3,
+        name: "Thabo Molefe",
+        position: "Quality Analyst",
+        department: "QA",
+        salary: 55000,
+        employmentHistory:
+            "Joined in 2018",
+        contact:
+            "thabo.molefe@moderntech.com"
+    },
 
-const totalDepartments =
-    document.getElementById("totalDepartments");
+    {
+        employeeId: 4,
+        name: "Keshav Naidoo",
+        position: "Sales Representative",
+        department: "Sales",
+        salary: 60000,
+        employmentHistory:
+            "Joined in 2020",
+        contact:
+            "keshav.naidoo@moderntech.com"
+    },
 
-const averageSalary =
-    document.getElementById("averageSalary");
+    {
+        employeeId: 5,
+        name: "Zanele Khumalo",
+        position: "Marketing Specialist",
+        department: "Marketing",
+        salary: 58000,
+        employmentHistory:
+            "Joined in 2019",
+        contact:
+            "zanele.khumalo@moderntech.com"
+    },
 
-const employeeModal =
-    document.getElementById("employeeModal");
+    {
+        employeeId: 6,
+        name: "Sipho Zulu",
+        position: "UI/UX Designer",
+        department: "Design",
+        salary: 65000,
+        employmentHistory:
+            "Joined in 2016",
+        contact:
+            "sipho.zulu@moderntech.com"
+    },
 
-const modalContent =
-    document.getElementById("modalContent");
+    {
+        employeeId: 7,
+        name: "Naledi Moeketsi",
+        position: "DevOps Engineer",
+        department: "IT",
+        salary: 72000,
+        employmentHistory:
+            "Joined in 2017",
+        contact:
+            "naledi.moeketsi@moderntech.com"
+    },
 
-const closeModal =
-    document.getElementById("closeModal");
+    {
+        employeeId: 8,
+        name: "Farai Gumbo",
+        position: "Content Strategist",
+        department: "Marketing",
+        salary: 56000,
+        employmentHistory:
+            "Joined in 2021",
+        contact:
+            "farai.gumbo@moderntech.com"
+    },
 
-const editModal =
-    document.getElementById("editModal");
+    {
+        employeeId: 9,
+        name: "Karabo Dlamini",
+        position: "Accountant",
+        department: "Finance",
+        salary: 62000,
+        employmentHistory:
+            "Joined in 2018",
+        contact:
+            "karabo.dlamini@moderntech.com"
+    },
 
-const closeEditModal =
-    document.getElementById("closeEditModal");
+    {
+        employeeId: 10,
+        name: "Fatima Patel",
+        position: "Customer Support Lead",
+        department: "Support",
+        salary: 58000,
+        employmentHistory:
+            "Joined in 2016",
+        contact:
+            "fatima.patel@moderntech.com"
+    }
 
-const saveEmployeeBtn =
-    document.getElementById("saveEmployeeBtn");
+];
 
-const editName =
-    document.getElementById("editName");
-
-const editPosition =
-    document.getElementById("editPosition");
-
-const editDepartment =
-    document.getElementById("editDepartment");
-
-const editContact =
-    document.getElementById("editContact");
-
-const editSalary =
-    document.getElementById("editSalary");
-
-
-/* ==================================================
-   DATA
-   Stores employee information and tracks the selected
-   employee being edited.
-================================================== */
-
-let employees = [];
 let currentEmployeeId = null;
 
+/* ==================================================
+   PAGE RENDERING
+   Generates the Employees page inside #main.
+================================================== */
+
+function renderEmployeesPage() {
+
+    const main =
+        document.getElementById("main");
+
+    if (!main) return;
+
+    main.innerHTML = `
+
+        <!-- PAGE HEADER -->
+        <div class="page-head">
+
+            <div class="eyebrow">
+                Employee Management
+            </div>
+
+            <h1 class="page-title">
+                Employees
+            </h1>
+
+            <div class="page-sub">
+                Manage employee records,
+                departments and workforce information.
+            </div>
+
+        </div>
+
+        <!-- KPI SECTION -->
+        <section class="kpis">
+
+            <div class="kpi">
+
+                <div
+                    class="kico"
+                    style="background:linear-gradient(135deg,#2f6be0,#1746b0)"
+                >
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="klab">
+                    Total Employees
+                </div>
+
+                <div
+                    class="kval"
+                    id="totalEmployees"
+                >
+                    0
+                </div>
+
+            </div>
+
+            <div class="kpi">
+
+                <div
+                    class="kico"
+                    style="background:linear-gradient(135deg,#10b981,#0f9d6f)"
+                >
+                    <i class="bi bi-building-fill"></i>
+                </div>
+
+                <div class="klab">
+                    Departments
+                </div>
+
+                <div
+                    class="kval"
+                    id="totalDepartments"
+                >
+                    0
+                </div>
+
+            </div>
+
+            <div class="kpi">
+
+                <div
+                    class="kico"
+                    style="background:linear-gradient(135deg,#f59e0b,#b6790c)"
+                >
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+
+                <div class="klab">
+                    Average Salary
+                </div>
+
+                <div
+                    class="kval"
+                    id="averageSalary"
+                >
+                    R0
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- EMPLOYEE DIRECTORY -->
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <h3>
+                    Employee Directory
+                </h3>
+
+                <span class="hint">
+                    Search and manage employee records
+                </span>
+
+            </div>
+
+            <!-- SEARCH + FILTER -->
+            <div class="toolbar">
+
+                <div class="search">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search employees..."
+                    >
+
+                </div>
+
+                <select
+                    id="departmentFilter"
+                    class="select"
+                >
+
+                    <option value="All">
+                        All Departments
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- TABLE HEADER -->
+            <div class="thead emp-grid">
+
+                <div>Employee</div>
+                <div>Department</div>
+                <div>Position</div>
+                <div>Contact</div>
+                <div>Actions</div>
+
+            </div>
+
+            <!-- EMPLOYEE ROWS -->
+            <div id="employeeContainer"></div>
+
+        </section>
+
+    `;
+
+}
 
 /* ==================================================
    HELPERS
-   Contains reusable utility functions used throughout
-   the application.
 ================================================== */
 
-// Converts an employee name into initials for avatars
 function getInitials(name) {
 
     return name
@@ -395,144 +633,178 @@ function getInitials(name) {
 }
 
 /* ==================================================
-   STATS
-   Calculates and updates employee statistics displayed
-   on the dashboard.
+   KPI STATISTICS
 ================================================== */
 
 function updateStatistics() {
 
-    // Updates the total number of employees
+    const totalEmployees =
+        document.getElementById("totalEmployees");
+
+    const totalDepartments =
+        document.getElementById("totalDepartments");
+
+    const averageSalary =
+        document.getElementById("averageSalary");
+
+    if (
+        !totalEmployees ||
+        !totalDepartments ||
+        !averageSalary
+    ) {
+        return;
+    }
+
     totalEmployees.textContent =
         employees.length;
 
-    // Creates a list of unique departments from employee data
     const departments =
-        [...new Set(
-            employees.map(emp => emp.department)
-        )];
+        [
+            ...new Set(
+                employees.map(
+                    employee =>
+                        employee.department
+                )
+            )
+        ];
 
-    // Displays the total number of departments
     totalDepartments.textContent =
         departments.length;
 
-    // Calculates the average salary of all employees
     const average =
         employees.reduce(
-            (sum, emp) => sum + emp.salary,
+            (sum, employee) =>
+                sum + employee.salary,
             0
         ) / employees.length;
 
-    // Displays the formatted average salary value
     averageSalary.textContent =
-        "R" + Math.round(average).toLocaleString();
+        "R" +
+        Math.round(average)
+            .toLocaleString();
 
 }
 
-
 /* ==================================================
-   DEPARTMENTS
-   Populates the department filter dropdown using
-   available employee department data.
+   DEPARTMENT FILTER
 ================================================== */
 
 function populateDepartments() {
 
-    // Gets all unique departments from employee records
-    const departments =
-        [...new Set(
-            employees.map(emp => emp.department)
-        )];
+    const departmentFilter =
+        document.getElementById(
+            "departmentFilter"
+        );
 
-    // Resets the dropdown and adds the default option
+    if (!departmentFilter) return;
+
     departmentFilter.innerHTML =
         '<option value="All">All Departments</option>';
 
-    // Adds each department as a selectable option
+    const departments =
+        [
+            ...new Set(
+                employees.map(
+                    employee =>
+                        employee.department
+                )
+            )
+        ];
+
     departments.forEach(department => {
 
         const option =
             document.createElement("option");
 
-        option.value = department;
-        option.textContent = department;
+        option.value =
+            department;
 
-        departmentFilter.appendChild(option);
+        option.textContent =
+            department;
+
+        departmentFilter.appendChild(
+            option
+        );
 
     });
 
 }
-
-
 /* ==================================================
-   RENDER
-   Displays employee information dynamically inside
-   the employee table.
+   EMPLOYEE TABLE RENDERING
 ================================================== */
 
 function renderEmployees(employeeList) {
 
-    // Clears existing employee records before rendering new data
+    const employeeContainer =
+        document.getElementById(
+            "employeeContainer"
+        );
+
+    if (!employeeContainer) return;
+
     employeeContainer.innerHTML = "";
 
-    // Creates an employee row for every employee in the list
     employeeList.forEach(employee => {
 
         employeeContainer.innerHTML += `
 
-        <div class="trow emp-grid">
+            <div class="trow emp-grid">
 
-            <div class="who-cell">
+                <div class="who-cell">
 
-                <div class="avatar">
-                    ${getInitials(employee.name)}
+                    <div class="avatar">
+                        ${getInitials(employee.name)}
+                    </div>
+
+                    <div>
+
+                        <div class="nm">
+                            ${employee.name}
+                        </div>
+
+                        <div class="rl">
+                            ID: ${employee.employeeId}
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <div>
 
-                    <div class="nm">
-                        ${employee.name}
-                    </div>
+                    <span class="pill dept">
+                        ${employee.department}
+                    </span>
 
-                    <div class="rl">
-                        ID: ${employee.employeeId}
-                    </div>
+                </div>
+
+                <div>
+                    ${employee.position}
+                </div>
+
+                <div>
+                    ${employee.contact}
+                </div>
+
+                <div class="row-actions">
+
+                    <button
+                        class="btn sm ghost"
+                        onclick="viewEmployee(${employee.employeeId})"
+                    >
+                        View
+                    </button>
+
+                    <button
+                        class="btn sm"
+                        onclick="editEmployee(${employee.employeeId})"
+                    >
+                        Edit
+                    </button>
 
                 </div>
 
             </div>
-
-            <div>
-                <span class="pill dept">
-                    ${employee.department}
-                </span>
-            </div>
-
-            <div>${employee.position}</div>
-
-            <div>${employee.contact}</div>
-
-            <div class="row-actions">
-
-                <!-- Opens the employee details modal -->
-                <button
-                    class="btn sm ghost"
-                    onclick="viewEmployee(${employee.employeeId})"
-                >
-                    View
-                </button>
-
-                <!-- Opens the employee editing modal -->
-                <button
-                    class="btn sm"
-                    onclick="editEmployee(${employee.employeeId})"
-                >
-                    Edit
-                </button>
-
-            </div>
-
-        </div>
 
         `;
 
@@ -540,250 +812,399 @@ function renderEmployees(employeeList) {
 
 }
 
-
 /* ==================================================
-   VIEW
-   Displays complete employee information inside a modal.
+   VIEW EMPLOYEE
 ================================================== */
 
 function viewEmployee(id) {
 
-    // Finds the selected employee using their ID
     const employee =
         employees.find(
-            emp => emp.employeeId === id
+            emp =>
+                emp.employeeId === id
         );
 
-    // Stops execution if no employee is found
     if (!employee) return;
 
-    // Inserts employee information into the modal
+    const modalContent =
+        document.getElementById(
+            "modalContent"
+        );
+
     modalContent.innerHTML = `
 
-        <div class="line"><span>ID</span><strong>${employee.employeeId}</strong></div>
-        <div class="line"><span>Name</span><strong>${employee.name}</strong></div>
-        <div class="line"><span>Position</span><strong>${employee.position}</strong></div>
-        <div class="line"><span>Department</span><strong>${employee.department}</strong></div>
-        <div class="line"><span>Salary</span><strong>R${employee.salary.toLocaleString()}</strong></div>
-        <div class="line"><span>Contact</span><strong>${employee.contact}</strong></div>
-        <div class="line"><span>History</span><strong>${employee.employmentHistory}</strong></div>
+        <div class="line">
+            <span>ID</span>
+            <strong>${employee.employeeId}</strong>
+        </div>
+
+        <div class="line">
+            <span>Name</span>
+            <strong>${employee.name}</strong>
+        </div>
+
+        <div class="line">
+            <span>Position</span>
+            <strong>${employee.position}</strong>
+        </div>
+
+        <div class="line">
+            <span>Department</span>
+            <strong>${employee.department}</strong>
+        </div>
+
+        <div class="line">
+            <span>Salary</span>
+            <strong>
+                R${employee.salary.toLocaleString()}
+            </strong>
+        </div>
+
+        <div class="line">
+            <span>Contact</span>
+            <strong>${employee.contact}</strong>
+        </div>
+
+        <div class="line">
+            <span>History</span>
+            <strong>
+                ${employee.employmentHistory}
+            </strong>
+        </div>
 
     `;
 
-    // Displays the employee information modal
-    employeeModal.classList.add("show");
+    document
+        .getElementById("employeeModal")
+        .classList.add("show");
 
 }
 
-
 /* ==================================================
-   EDIT
-   Loads selected employee details into the edit form.
+   EDIT EMPLOYEE
 ================================================== */
 
 function editEmployee(id) {
 
-    // Finds the employee that matches the selected ID
     const employee =
         employees.find(
-            emp => emp.employeeId === id
+            emp =>
+                emp.employeeId === id
         );
 
-    // Stops execution if no employee exists
     if (!employee) return;
 
-    // Stores the current employee being edited
     currentEmployeeId = id;
 
-    // Loads employee information into the edit fields
-    editName.value = employee.name;
-    editPosition.value = employee.position;
-    editDepartment.value = employee.department;
-    editContact.value = employee.contact;
-    editSalary.value = employee.salary;
+    document.getElementById(
+        "editName"
+    ).value = employee.name;
 
-    // Opens the edit modal
-    editModal.classList.add("show");
+    document.getElementById(
+        "editPosition"
+    ).value = employee.position;
+
+    document.getElementById(
+        "editDepartment"
+    ).value = employee.department;
+
+    document.getElementById(
+        "editContact"
+    ).value = employee.contact;
+
+    document.getElementById(
+        "editSalary"
+    ).value = employee.salary;
+
+    document
+        .getElementById("editModal")
+        .classList.add("show");
 
 }
 
-
 /* ==================================================
-   SAVE
-   Updates employee details after editing and refreshes
-   the displayed employee information.
+   SAVE EMPLOYEE CHANGES
 ================================================== */
 
-saveEmployeeBtn.addEventListener("click", () => {
+function saveEmployeeChanges() {
 
-    // Finds the employee currently being edited
     const employee =
         employees.find(
-            emp => emp.employeeId === currentEmployeeId
+            emp =>
+                emp.employeeId === currentEmployeeId
         );
 
-    // Stops execution if employee is not found
     if (!employee) return;
 
-    // Updates employee information with edited values
-    employee.name = editName.value;
-    employee.position = editPosition.value;
-    employee.department = editDepartment.value;
-    employee.contact = editContact.value;
-    employee.salary = Number(editSalary.value);
+    employee.name =
+        document.getElementById(
+            "editName"
+        ).value;
 
-    // Refreshes the employee list and statistics
+    employee.position =
+        document.getElementById(
+            "editPosition"
+        ).value;
+
+    employee.department =
+        document.getElementById(
+            "editDepartment"
+        ).value;
+
+    employee.contact =
+        document.getElementById(
+            "editContact"
+        ).value;
+
+    employee.salary =
+        Number(
+            document.getElementById(
+                "editSalary"
+            ).value
+        );
+
     renderEmployees(employees);
     updateStatistics();
 
-    // Closes the edit modal after saving changes
-    editModal.classList.remove("show");
+    document
+        .getElementById("editModal")
+        .classList.remove("show");
 
-});
-
+}
 
 /* ==================================================
-   FILTER
-   Filters employees based on search input and selected
-   department.
+   SEARCH AND FILTERING
 ================================================== */
 
-function filterEmployees() {
+function applyFilters() {
 
-    // Gets the search text entered by the user
-    const search =
-        searchInput.value.toLowerCase();
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
 
-    // Gets the selected department filter value
+    const departmentFilter =
+        document.getElementById(
+            "departmentFilter"
+        );
+
+    const searchTerm =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
     const department =
         departmentFilter.value;
 
-    // Filters employees based on matching information
-    let filtered =
-        employees.filter(employee =>
+    const filteredEmployees =
+        employees.filter(employee => {
 
-            employee.name.toLowerCase().includes(search) ||
-            employee.position.toLowerCase().includes(search) ||
-            employee.department.toLowerCase().includes(search) ||
-            employee.contact.toLowerCase().includes(search)
+            const matchesSearch =
 
-        );
+                employee.name
+                    .toLowerCase()
+                    .includes(searchTerm)
 
-    // Applies department filtering if a specific department is selected
-    if (department !== "All") {
+                ||
 
-        filtered =
-            filtered.filter(
-                employee =>
-                    employee.department === department
+                employee.position
+                    .toLowerCase()
+                    .includes(searchTerm)
+
+                ||
+
+                employee.department
+                    .toLowerCase()
+                    .includes(searchTerm);
+
+            const matchesDepartment =
+
+                department === "All"
+
+                ||
+
+                employee.department === department;
+
+            return (
+                matchesSearch &&
+                matchesDepartment
             );
 
-    }
+        });
 
-    // Displays the filtered employee results
-    renderEmployees(filtered);
+    renderEmployees(filteredEmployees);
 
 }
 
-// Runs filtering when the user types in the search field
-searchInput.addEventListener(
-    "input",
-    filterEmployees
-);
-
-// Runs filtering when the department selection changes
-departmentFilter.addEventListener(
-    "change",
-    filterEmployees
-);
-
-
 /* ==================================================
-   MODALS
-   Controls opening and closing of modal windows.
+   MODAL EVENTS
 ================================================== */
 
-// Closes the employee details modal
-closeModal.addEventListener("click", () => {
-    employeeModal.classList.remove("show");
-});
+function initialiseModalEvents() {
 
-// Closes the employee edit modal
-closeEditModal.addEventListener("click", () => {
-    editModal.classList.remove("show");
-});
+    const closeModal =
+        document.getElementById(
+            "closeModal"
+        );
 
+    const closeEditModal =
+        document.getElementById(
+            "closeEditModal"
+        );
 
-/* ==================================================
-   LOAD JSON
-   Loads employee information from an external JSON file
-   and initializes the employee management page.
-================================================== */
+    const saveEmployeeBtn =
+        document.getElementById(
+            "saveEmployeeBtn"
+        );
 
-async function loadEmployees() {
+    if (closeModal) {
 
-    try {
+        closeModal.addEventListener(
+            "click",
+            () => {
 
-        // Retrieves employee data from the JSON file
-        const response =
-            await fetch("data/employee_info.json");
+                document
+                    .getElementById(
+                        "employeeModal"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
 
-        // Converts the response into JavaScript data
-        const data =
-            await response.json();
-
-        // Stores employee information in the employees array
-        employees =
-            data.employeeInformation || [];
-
-        // Initializes page data and displays employees
-        populateDepartments();
-        updateStatistics();
-        renderEmployees(employees);
+            }
+        );
 
     }
 
-    catch(error) {
+    if (closeEditModal) {
 
-        // Displays an error message if loading fails
-        console.error(
-            "Error loading employee data:",
-            error
+        closeEditModal.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById(
+                        "editModal"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+        );
+
+    }
+
+    if (saveEmployeeBtn) {
+
+        saveEmployeeBtn.addEventListener(
+            "click",
+            saveEmployeeChanges
         );
 
     }
 
 }
 
-// Makes functions available globally for HTML button actions
-window.viewEmployee = viewEmployee;
-window.editEmployee = editEmployee;
+/* ==================================================
+   FILTER EVENTS
+================================================== */
+
+function initialiseFilterEvents() {
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const departmentFilter =
+        document.getElementById(
+            "departmentFilter"
+        );
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            applyFilters
+        );
+
+    }
+
+    if (departmentFilter) {
+
+        departmentFilter.addEventListener(
+            "change",
+            applyFilters
+        );
+
+    }
+
+}
 
 /* ==================================================
    THEME BUTTON
 ================================================== */
 
-// Apply saved theme when page loads
-applyTheme(currentTheme());
+function initialiseThemeButton() {
 
-// Toggle theme when button is clicked
-const themeBtn =
-    document.getElementById("themeBtn");
+    const themeBtn =
+        document.getElementById(
+            "themeBtn"
+        );
 
-if (themeBtn) {
+    if (!themeBtn) return;
 
-    themeBtn.addEventListener("click", () => {
+    themeBtn.addEventListener(
+        "click",
+        () => {
 
-        const nextTheme =
-            currentTheme() === "dark"
-                ? "light"
-                : "dark";
+            const nextTheme =
 
-        applyTheme(nextTheme);
+                currentTheme() === "dark"
+                    ? "light"
+                    : "dark";
 
-    });
+            applyTheme(
+                nextTheme
+            );
+
+        }
+    );
 
 }
 
-// Starts loading employee data when the script runs
-loadEmployees();
+/* ==================================================
+   INITIALISATION
+================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        renderEmployeesPage();
+
+        populateDepartments();
+
+        updateStatistics();
+
+        renderEmployees(
+            employees
+        );
+
+        initialiseThemeButton();
+
+        initialiseFilterEvents();
+
+        initialiseModalEvents();
+
+        applyTheme(
+            currentTheme()
+        );
+
+        console.log(
+            "Employees page initialised successfully."
+        );
+
+    }
+);

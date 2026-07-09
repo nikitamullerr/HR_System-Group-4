@@ -8,7 +8,7 @@ const NAV = [
   {id:"time_off", label:"Time Off Management"},
   {id:"attendance", label:"Attendance Management"},
   {id:"payroll_payslips", label:"Payroll and Payslips"},
-  {id:"performance_reviews", label:"Performance Reviews"},
+  {id:"performance_review", label:"Performance Reviews"},
 ];
 
 /* =================================================================
