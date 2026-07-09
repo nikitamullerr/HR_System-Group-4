@@ -1,220 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Defines the document settings and connects external resources -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Reviews | ModernTech HR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Links the main stylesheet for page styling -->
-    <link rel="stylesheet" href="css/style.css">
+<title>ModernTech · Performance Reviews</title>
 
-    <!-- Imports Bootstrap Icons for interface icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+
+<script>
+try{
+    document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("mt-theme") || "light"
+    );
+}catch(e){}
+</script>
+
 </head>
 
-<!-- Identifies the current page so JavaScript can load the correct functionality -->
 <body data-page="performance_review">
 
 <div id="app">
 
-    <!-- Top navigation bar generated dynamically using JavaScript -->
-    <header class="topbar" id="topbar"></header>
+    <div class="layout">
 
-    <main class="main">
+        <!-- SIDEBAR -->
+        <aside
+            class="sidebar"
+            id="sidebar">
+        </aside>
 
-        <!-- Displays the page title and introduction information -->
+        <!-- MOBILE SCRIM -->
+        <div
+            class="scrim"
+            id="scrim">
+        </div>
 
-        <div class="page-head">
+        <div class="col">
 
-            <div class="eyebrow">
-                Performance Management
-            </div>
+            <!-- TOPBAR -->
+            <header
+                class="topbar"
+                id="topbar">
+            </header>
 
-            <h1 class="page-title">
-                Employee Performance Reviews
-            </h1>
-
-            <div class="page-sub">
-                Monitor employee achievements, development goals, ratings and review outcomes.
-            </div>
+            <!-- MAIN CONTENT
+                 Generated entirely by JavaScript -->
+            <main
+                class="main"
+                id="main">
+            </main>
 
         </div>
 
-        <!-- Displays key performance indicators and summary information -->
-
-        <section class="kpis">
-
-            <!-- Shows the total number of completed performance reviews -->
-            <div class="kpi">
-
-                <div class="kico"
-                    style="background:linear-gradient(135deg,#2f6be0,#1746b0)">
-                    <i class="bi bi-clipboard-data-fill"></i>
-                </div>
-
-                <div class="klab">
-                    Total Reviews
-                </div>
-
-                <div class="kval" id="totalReviews">
-                    0
-                </div>
-
-            </div>
-
-            <!-- Shows the average employee performance rating -->
-            <div class="kpi">
-
-                <div class="kico"
-                    style="background:linear-gradient(135deg,#10b981,#0f9d6f)">
-                    <i class="bi bi-star-fill"></i>
-                </div>
-
-                <div class="klab">
-                    Average Rating
-                </div>
-
-                <div class="kval" id="averageRating">
-                    0
-                </div>
-
-            </div>
-
-            <!-- Shows the number of employees classified as top performers -->
-            <div class="kpi">
-
-                <div class="kico"
-                    style="background:linear-gradient(135deg,#f59e0b,#b6790c)">
-                    <i class="bi bi-trophy-fill"></i>
-                </div>
-
-                <div class="klab">
-                    Top Performers
-                </div>
-
-                <div class="kval" id="topPerformers">
-                    0
-                </div>
-
-            </div>
-
-            <!-- Shows the number of employees requiring improvement -->
-            <div class="kpi">
-
-                <div class="kico"
-                    style="background:linear-gradient(135deg,#ef4444,#c62828)">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                </div>
-
-                <div class="klab">
-                    Needs Improvement
-                </div>
-
-                <div class="kval" id="needsImprovement">
-                    0
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Provides buttons to filter reviews based on performance category -->
-
-        <section class="tabs">
-
-            <button class="tab active" data-filter="All">
-                All Reviews
-            </button>
-
-            <button class="tab" data-filter="Top Performer">
-                Top Performers
-            </button>
-
-            <button class="tab" data-filter="Outstanding">
-                Outstanding
-            </button>
-
-            <button class="tab" data-filter="Needs Improvement">
-                Needs Improvement
-            </button>
-
-        </section>
-
-        <!-- Contains search and filtering controls for employee reviews -->
-
-        <section class="panel">
-
-            <div class="toolbar">
-
-                <!-- Allows users to search for specific employees -->
-                <div class="search">
-
-                    <i class="bi bi-search"></i>
-
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search employee...">
-
-                </div>
-
-                <!-- Filters reviews by department -->
-                <select
-                    id="departmentFilter"
-                    class="select">
-
-                    <option value="All">
-                        All Departments
-                    </option>
-
-                </select>
-
-                <!-- Filters reviews by employee rating -->
-                <select
-                    id="ratingFilter"
-                    class="select">
-
-                    <option value="All">
-                        All Ratings
-                    </option>
-
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="1">1 Star</option>
-
-                </select>
-
-            </div>
-
-            <!-- Displays the headings for the employee review table -->
-
-            <div class="thead emp-grid">
-
-                <div>Employee</div>
-                <div>Department</div>
-                <div>Rating</div>
-                <div>Reviewer</div>
-                <div>Actions</div>
-
-            </div>
-
-            <!-- JavaScript dynamically inserts employee review records here -->
-            <div id="reviewContainer"></div>
-
-        </section>
-
-    </main>
+    </div>
 
 </div>
 
-<!-- Modal window used to display full performance review details -->
+<!-- REVIEW DETAILS MODAL -->
 
-<div id="reviewModal" class="modal-bg">
+<div
+    id="reviewModal"
+    class="modal-bg">
 
     <div class="modal">
 
@@ -228,7 +80,6 @@
 
         </div>
 
-        <!-- Review information is loaded dynamically into this section -->
         <div
             class="mbody"
             id="modalContent">
@@ -238,9 +89,11 @@
 
 </div>
 
-<!-- Modal window used for editing existing performance reviews -->
+<!-- EDIT REVIEW MODAL -->
 
-<div id="editModal" class="modal-bg">
+<div
+    id="editModal"
+    class="modal-bg">
 
     <div class="modal">
 
@@ -254,10 +107,11 @@
 
         </div>
 
-        <!-- Contains form fields for updating review information -->
         <div class="mbody">
 
-            <label>Rating</label>
+            <label>
+                Rating
+            </label>
 
             <select
                 id="editRating"
@@ -271,21 +125,44 @@
 
             </select>
 
-            <label>Strengths</label>
-            <textarea id="editStrengths" class="field"></textarea>
+            <label>
+                Strengths
+            </label>
 
-            <label>Areas For Improvement</label>
-            <textarea id="editImprovements" class="field"></textarea>
+            <textarea
+                id="editStrengths"
+                class="field">
+            </textarea>
 
-            <label>Development Goals</label>
-            <textarea id="editGoals" class="field"></textarea>
+            <label>
+                Areas For Improvement
+            </label>
 
-            <label>Manager Comments</label>
-            <textarea id="editComments" class="field"></textarea>
+            <textarea
+                id="editImprovements"
+                class="field">
+            </textarea>
+
+            <label>
+                Development Goals
+            </label>
+
+            <textarea
+                id="editGoals"
+                class="field">
+            </textarea>
+
+            <label>
+                Manager Comments
+            </label>
+
+            <textarea
+                id="editComments"
+                class="field">
+            </textarea>
 
         </div>
 
-        <!-- Contains the button used to save updated review information -->
         <div class="mfoot">
 
             <button
@@ -302,7 +179,6 @@
 
 </div>
 
-<!-- Loads JavaScript functionality for the performance review page -->
 <script src="javascript/performance_review.js"></script>
 
 </body>

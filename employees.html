@@ -1,335 +1,210 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <!-- Defines the character encoding used by the webpage -->
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Ensures the page is responsive on different screen sizes -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModernTech · Employee Management</title>
 
-    <!-- Page title displayed in the browser tab -->
-    <title>Employees | ModernTech HR</title>
+<!-- Bootstrap Icons -->
 
-    <!-- Main stylesheet for page styling -->
-    <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Bootstrap Icons library used for displaying icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<!-- Shared Stylesheet -->
+
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Load Saved Theme Before Page Renders -->
+
+<script>
+try {
+    document.documentElement.setAttribute(
+        "data-theme",
+        localStorage.getItem("mt-theme") || "light"
+    );
+} catch (e) {}
+</script>
+
 </head>
 
-<!-- Identifies this page as the employees page for JavaScript functionality -->
 <body data-page="employees">
+
+<!-- ==================================================
+     APPLICATION LAYOUT
+     Matches Attendance Page Structure
+================================================== -->
 
 <div id="app">
 
-    <!-- TOPBAR SECTION
-         Navigation/header area generated dynamically using JavaScript -->
-    <header class="topbar" id="topbar"></header>
 
-    <main class="main">
-
-        <!-- PAGE HEADER SECTION
-             Displays the page title and description -->
-
-        <div class="page-head">
-
-            <div class="eyebrow">
-                Employee Management
-            </div>
-
-            <h1 class="page-title">
-                Employees
-            </h1>
-
-            <div class="page-sub">
-                Manage employee records, departments and workforce information.
-            </div>
-
-        </div>
-
-        <!-- KPI CARDS SECTION
-             Displays workforce statistics and summary information -->
-
-        <section class="kpis">
-
-            <!-- Total Employees KPI Card -->
-            <div class="kpi">
-
-                <div
-                    class="kico"
-                    style="background:linear-gradient(135deg,#2f6be0,#1746b0)">
-
-                    <i class="bi bi-people-fill"></i>
-
-                </div>
-
-                <div class="klab">
-                    Total Employees
-                </div>
-
-                <!-- Updated dynamically with employee count -->
-                <div
-                    class="kval"
-                    id="totalEmployees">
-
-                    0
-
-                </div>
-
-            </div>
-
-            <!-- Departments KPI Card -->
-            <div class="kpi">
-
-                <div
-                    class="kico"
-                    style="background:linear-gradient(135deg,#10b981,#0f9d6f)">
-
-                    <i class="bi bi-building-fill"></i>
-
-                </div>
-
-                <div class="klab">
-                    Departments
-                </div>
-
-                <!-- Updated dynamically with department count -->
-                <div
-                    class="kval"
-                    id="totalDepartments">
-
-                    0
-
-                </div>
-
-            </div>
-
-            <!-- Average Salary KPI Card -->
-            <div class="kpi">
-
-                <div
-                    class="kico"
-                    style="background:linear-gradient(135deg,#f59e0b,#b6790c)">
-
-                    <i class="bi bi-cash-stack"></i>
-
-                </div>
-
-                <div class="klab">
-                    Average Salary
-                </div>
-
-                <!-- Updated dynamically with average salary value -->
-                <div
-                    class="kval"
-                    id="averageSalary">
-
-                    R0
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- EMPLOYEE DIRECTORY SECTION
-             Contains employee records, search tools, and filtering options -->
-
-        <section class="panel">
-
-            <div class="panel-title">
-
-                <h3>
-                    Employee Directory
-                </h3>
-
-                <span class="hint">
-                    Search and manage employee records
-                </span>
-
-            </div>
-
-            <!-- SEARCH AND FILTER SECTION
-                 Allows users to search employees and filter by department -->
-
-            <div class="toolbar">
-
-                <!-- Search Input -->
-                <div class="search">
-
-                    <i class="bi bi-search"></i>
-
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Search employees..."
-                    >
-
-                </div>
-
-                <!-- Department Filter Dropdown -->
-                <select
-                    id="departmentFilter"
-                    class="select">
-
-                    <option value="All">
-                        All Departments
-                    </option>
-
-                </select>
-
-            </div>
-
-            <!-- EMPLOYEE TABLE HEADER
-                 Defines the structure of the employee data display -->
-
-            <div class="thead emp-grid">
-
-                <div>Employee</div>
-                <div>Department</div>
-                <div>Position</div>
-                <div>Contact</div>
-                <div>Actions</div>
-
-            </div>
-
-            <!-- EMPLOYEE DATA CONTAINER
-                 Employee records are inserted here dynamically using JavaScript -->
-
-            <div id="employeeContainer"></div>
-
-        </section>
-
-    </main>
-
-</div>
-
-<!-- VIEW EMPLOYEE MODAL
-     Displays detailed information about a selected employee -->
-
-<div
-    id="employeeModal"
-    class="modal-bg">
-
-    <div class="modal">
-
-        <div class="mhead">
-
-            Employee Details
-
-            <!-- Button used to close the employee details modal -->
-            <button id="closeModal">
-                &times;
-            </button>
-
-        </div>
-
-        <!-- Dynamic content area for employee information -->
-        <div
-            class="mbody"
-            id="modalContent">
-
-        </div>
+<div class="layout">
+
+    <!-- Sidebar Placeholder -->
+    <aside
+        class="sidebar"
+        id="sidebar">
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div
+        class="scrim"
+        id="scrim">
+    </div>
+
+    <!-- Main Column -->
+    <div class="col">
+
+        <!-- Dynamic Navigation -->
+        <header
+            class="topbar"
+            id="topbar">
+        </header>
+
+        <!-- Dynamic Employee Content -->
+        <main
+            class="main"
+            id="main">
+        </main>
 
     </div>
 
 </div>
 
-<!-- EDIT EMPLOYEE MODAL
-     Allows administrators to modify employee information -->
+
+</div>
+
+<!-- ==================================================
+     EMPLOYEE DETAILS MODAL
+================================================== -->
 
 <div
-    id="editModal"
-    class="modal-bg">
+    class="modal-bg"
+    id="employeeModal">
 
-    <div class="modal">
 
-        <div class="mhead">
+<div class="modal">
 
-            Edit Employee
+    <div class="mhead">
 
-            <!-- Button used to close the edit modal -->
-            <button id="closeEditModal">
-                &times;
-            </button>
+        Employee Details
 
-        </div>
+        <button
+            id="closeModal"
+            type="button">
 
-        <div class="mbody">
+            &times;
 
-            <!-- Employee Name Input -->
-            <label>
-                Name
-            </label>
+        </button>
 
-            <input
-                type="text"
-                id="editName"
-                class="field">
+    </div>
 
-            <!-- Employee Position Input -->
-            <label>
-                Position
-            </label>
+    <div
+        class="mbody"
+        id="modalContent">
+    </div>
 
-            <input
-                type="text"
-                id="editPosition"
-                class="field">
+</div>
 
-            <!-- Employee Department Input -->
-            <label>
-                Department
-            </label>
 
-            <input
-                type="text"
-                id="editDepartment"
-                class="field">
+</div>
 
-            <!-- Employee Contact Information Input -->
-            <label>
-                Contact
-            </label>
+<!-- ==================================================
+     EDIT EMPLOYEE MODAL
+================================================== -->
 
-            <input
-                type="text"
-                id="editContact"
-                class="field">
+<div
+    class="modal-bg"
+    id="editModal">
 
-            <!-- Employee Salary Input -->
-            <label>
-                Salary
-            </label>
 
-            <input
-                type="number"
-                id="editSalary"
-                class="field">
+<div class="modal">
 
-        </div>
+    <div class="mhead">
 
-        <div class="mfoot">
+        Edit Employee
 
-            <!-- Saves employee changes made in the form -->
-            <button
-                id="saveEmployeeBtn"
-                class="btn">
+        <button
+            id="closeEditModal"
+            type="button">
 
-                Save Changes
+            &times;
 
-            </button>
+        </button>
 
-        </div>
+    </div>
+
+    <div class="mbody">
+
+        <label>Name</label>
+
+        <input
+            type="text"
+            id="editName"
+            class="field">
+
+        <label>Position</label>
+
+        <input
+            type="text"
+            id="editPosition"
+            class="field">
+
+        <label>Department</label>
+
+        <input
+            type="text"
+            id="editDepartment"
+            class="field">
+
+        <label>Contact</label>
+
+        <input
+            type="text"
+            id="editContact"
+            class="field">
+
+        <label>Salary</label>
+
+        <input
+            type="number"
+            id="editSalary"
+            class="field">
+
+    </div>
+
+    <div class="mfoot">
+
+        <button
+            id="saveEmployeeBtn"
+            class="btn"
+            type="button">
+
+            Save Changes
+
+        </button>
 
     </div>
 
 </div>
 
-<!-- JavaScript file responsible for employee page functionality -->
+
+</div>
+
+<!-- ==================================================
+     TOAST NOTIFICATION
+================================================== -->
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+<!-- ==================================================
+     EMPLOYEES PAGE SCRIPT
+================================================== -->
+
 <script src="javascript/employees.js"></script>
+
 </body>
 </html>
