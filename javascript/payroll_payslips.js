@@ -1,6 +1,15 @@
-/* =================================================================
-   SHELL — Topbar and navigation
-   ================================================================= */
+/* ============================================================
+   SHELL — Top bar and navigation
+   Builds the navigation bar shown at the top of every page.
+   It does three things:
+     1. Defines the menu — the list of six pages (NAV).
+     2. Builds the top bar (topbarHTML) — logo, tabs, theme
+        toggle, and account button, highlighting the current page.
+     3. Creates the page links (pageUrl) so the tabs actually
+        open the right page when clicked.
+   In short: this is the shared navigation bar that lets you
+   move between all the sections of the HR system.
+   ============================================================ */
 
 const NAV = [
   {id:"dashboard", label:"Dashboard"},
@@ -11,7 +20,9 @@ const NAV = [
   {id:"reviews", label:"Performance Reviews"},
 ];
 
-function pageUrl(id) { return `../${id}/${id}.html`; }
+function pageUrl(id) { 
+  return id + ".html"; 
+}
 
 function topbarHTML(active) {
   const logo = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-5h4v5"/></svg>';
@@ -198,9 +209,17 @@ function parseDate(s) {
   return {y, m: m-1, d};
 }
 
-/* =================================================================
+/* ============================================================
    BUILD EMPLOYEES
-   ================================================================= */
+   Creates the full list of employee records the app uses.
+   It goes through the raw attendance/leave data and, for each
+   person, combines it with their department/role info and their
+   payroll info to build one complete employee object — including
+   name, role, department, contact details, salary, hours,
+   leave, attendance status, rating, and hire year.
+   The finished list is what every page (Employees, Payroll,
+   Attendance, etc.) reads from.
+   ============================================================ */
 
 function buildEmployees() {
   const employees = [];
@@ -247,9 +266,14 @@ function buildEmployees() {
   return employees;
 }
 
-/* =================================================================
+/* ============================================================
    STATE
-   ================================================================= */
+   Sets up the app's shared data that every page reads from.
+   Builds the employee list, works out the total monthly payroll,
+   and stores it all in one "state" object — along with a few
+   settings the pages use (like the current payroll page number,
+   the payroll search text, and the selected employee).
+   ============================================================ */
 
 const employees = buildEmployees();
 
@@ -265,9 +289,13 @@ const state = {
   payrollEmp: 1
 };
 
-/* =================================================================
+/* ============================================================
    UI HELPERS
-   ================================================================= */
+   Small shortcut tools used all over the app:
+   $  — finds one element on the page
+   $$ — finds all matching elements
+   toast — shows a brief pop-up message.
+   ============================================================ */
 
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -368,9 +396,13 @@ function wirePager(selector, callback) {
   });
 }
 
-/* =================================================================
+/* ============================================================
    MAIN RENDER FUNCTION
-   ================================================================= */
+   Draws the Payroll & Payslips page.
+   Remembers which tab is open ("payroll" or "payslips"), lays out
+   the page heading and the two tab buttons, then loads the content
+   for whichever tab is currently selected.
+   ============================================================ */
 
 let currentTab = "payroll";
 
@@ -410,9 +442,20 @@ function renderPayroll() {
   }
 }
 
-/* =================================================================
+/* ============================================================
    TAB 1: PAYROLL
-   ================================================================= */
+   Draws the Payroll tab: the KPI summary cards (total monthly
+   payroll, employees paid, average net pay, pay-run status) and
+   the searchable, paginated employee table with a "View payslip"
+   button on each row.
+   // Wire tabs
+// Make each tab button clickable: remember which tab was clicked
+// and re-draw the page so it shows that tab.
+
+// Show the content for the selected tab:
+// "payroll" tab → the payroll summary + table,
+// otherwise    → the payslips document view.
+   ============================================================ */
 
 function renderPayrollTab() {
   const body = document.getElementById('ppBody');
@@ -542,9 +585,17 @@ function drawPayrollTable() {
   });
 }
 
-/* =================================================================
+/* ============================================================
    PAYSLIP MODAL
-   ================================================================= */
+   Opens a pop-up showing one employee's payslip: their hours and
+   leave deductions, plus a breakdown of basic salary, overtime,
+   deductions, and net pay — with buttons to close, open the full
+   payslip, or download it.
+
+   // Fills in and paginates the payroll table (rows of employees with
+// their net pay and a "View payslip" button), and re-draws it whenever
+// the search box or page changes.
+   ============================================================ */
 
 function viewPayslip(id) {
   const e = state.employees.find(x => x.id === id);
@@ -591,9 +642,13 @@ function viewPayslip(id) {
   };
 }
 
-/* =================================================================
+/* ============================================================
    TAB 2: PAYSLIPS
-   ================================================================= */
+   Draws the Payslips tab: an employee picker on the left and a
+   full itemised payslip document on the right. You choose a
+   person and a pay period, and it shows their earnings,
+   deductions, net pay, and year-to-date totals.
+   ============================================================ */
 
 const PS_PERIODS = ["January", "February", "March", "April", "May", "June"]
   .map((name, m) => ({
@@ -805,9 +860,14 @@ function drawPayslipDoc() {
   }
 }
 
-/* =================================================================
+/* ============================================================
    PAYSLIP CALCULATIONS
-   ================================================================= */
+   Works out the money figures shown on a payslip.
+   calculatePayslipFigures — for one month: basic pay, overtime,
+     tax, pension, other deductions, gross, and net pay.
+   calculateYTD — adds up every month up to the chosen one to
+     give the year-to-date totals (earnings, deductions, net).
+   ============================================================ */
 
 function calculatePayslipFigures(e, monthIndex) {
   const basic = e.salary;
@@ -848,9 +908,13 @@ function calculateYTD(e, monthIndex) {
   return { earn, ded, net };
 }
 
-/* =================================================================
+/* ============================================================
    BOOT
-   ================================================================= */
+   Runs when the page finishes loading. It opens the right tab
+   (Payslips if we arrived here from a "view payslip" link,
+   otherwise Payroll) and draws the page. It also exposes a few
+   functions globally so other parts of the app can use them.
+   ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Payroll initializing...');
