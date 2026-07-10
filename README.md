@@ -13,6 +13,20 @@ A simple HR management web application for tracking employees, attendance, payro
 
 This application provides a modern HR dashboard experience for managing key workforce operations in one place. It includes a login page, dashboard, employee management, attendance tracking, leave requests, payroll slips, and performance review tools.
 
+## Links
+
+**Figma Link**
+https://www.figma.com/design/WJ8ZhGRUw5z5NtMklnHl1D/HR-System---Group-4?node-id=0-1&t=vna3TdWFUjLamIdf-1 
+
+**GitHub Repo**
+https://github.com/nikitamullerr/HR_System-Group-4.git
+
+**GitHub Live Link**
+https://nikitamullerr.github.io/HR_System-Group-4/ 
+
+**HR Group - Documentation**
+https://docs.google.com/document/d/1VuhvWDlhzR18jsjG5No5b2fd3wmIOFVNX-AYX-hzXrI/edit?usp=sharing
+
 ## Features
 
 - Secure demo login screen
