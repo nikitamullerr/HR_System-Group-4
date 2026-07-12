@@ -2430,3 +2430,559 @@ body.compact .trow,
 body.compact .thead {
   padding: 9px 18px;
 }
+
+/* ==================================================
+   EMPLOYEE TABLE - MOBILE OPTIMIZED
+================================================== */
+
+/* Hide table header on mobile */
+@media (max-width: 680px) {
+  .thead.emp-grid {
+    display: none !important;
+  }
+
+  /* Employee cards */
+  .trow.emp-grid {
+    display: block !important;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    padding: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .trow.emp-grid:hover {
+    background: var(--panel);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Each field as a row */
+  .trow.emp-grid .field-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+  }
+
+  .trow.emp-grid .field-row:last-child {
+    border-bottom: none;
+    background: var(--panel-2);
+    border-radius: 0 0 14px 14px;
+  }
+
+  /* Labels */
+  .trow.emp-grid .field-row .label {
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 11px;
+    min-width: 80px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Values */
+  .trow.emp-grid .field-row .value {
+    font-size: 14px;
+    color: var(--ink);
+    word-break: break-word;
+    flex: 1;
+  }
+
+  /* Employee name section - special styling */
+  .trow.emp-grid .employee-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--blue-50);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .trow.emp-grid .employee-section .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .trow.emp-grid .employee-section .emp-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .trow.emp-grid .employee-section .emp-info .name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .trow.emp-grid .employee-section .emp-info .id {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Department pill */
+  .trow.emp-grid .department-pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--blue-50);
+    color: var(--blue-700);
+  }
+
+  /* Actions section */
+  .trow.emp-grid .actions-section {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 10px 16px;
+  }
+
+  .trow.emp-grid .actions-section .btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 38px;
+    min-width: 70px;
+  }
+
+  .trow.emp-grid .actions-section .btn.ghost {
+    background: transparent;
+    color: var(--blue-700);
+    border: 1px solid var(--line);
+  }
+
+  .trow.emp-grid .actions-section .btn.ghost:hover {
+    background: var(--blue-50);
+  }
+
+  .trow.emp-grid .actions-section .btn.primary {
+    background: var(--blue-600);
+    color: white;
+  }
+
+  .trow.emp-grid .actions-section .btn.primary:hover {
+    background: var(--blue-700);
+  }
+
+  /* Email with proper wrapping */
+  .trow.emp-grid .field-row .value.email {
+    font-size: 13px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    color: var(--blue-600);
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 400px) {
+  .trow.emp-grid .field-row {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .trow.emp-grid .field-row .label {
+    min-width: 65px;
+    font-size: 10px;
+  }
+
+  .trow.emp-grid .field-row .value {
+    font-size: 13px;
+  }
+
+  .trow.emp-grid .employee-section {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .trow.emp-grid .employee-section .avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .trow.emp-grid .employee-section .emp-info .name {
+    font-size: 14px;
+  }
+
+  .trow.emp-grid .actions-section {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .trow.emp-grid .actions-section .btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    min-height: 34px;
+    min-width: 60px;
+  }
+}
+
+/* ==================================================
+   PERFORMANCE REVIEWS - COMPLETE STYLING
+================================================== */
+
+/* Performance Review Cards - Mobile First */
+@media (max-width: 680px) {
+  /* Hide table header on mobile */
+  .thead.emp-grid {
+    display: none !important;
+  }
+
+  /* Each review becomes a card */
+  .trow.emp-grid {
+    display: block !important;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    padding: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .trow.emp-grid:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Review header with employee info */
+  .trow.emp-grid .review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .trow.emp-grid .review-header .emp-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .trow.emp-grid .review-header .emp-info .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .trow.emp-grid .review-header .emp-info .name {
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .trow.emp-grid .review-header .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .rating-badge.star-5 {
+    background: rgba(16, 185, 129, 0.12);
+    color: #0f9d6f;
+  }
+
+  .rating-badge.star-4 {
+    background: rgba(6, 182, 212, 0.12);
+    color: #0891b2;
+  }
+
+  .rating-badge.star-3 {
+    background: rgba(245, 158, 11, 0.12);
+    color: #b6790c;
+  }
+
+  .rating-badge.star-2 {
+    background: rgba(239, 68, 68, 0.12);
+    color: #e0453f;
+  }
+
+  .rating-badge.star-1 {
+    background: rgba(239, 68, 68, 0.12);
+    color: #e0453f;
+  }
+
+  /* Review body - field rows */
+  .trow.emp-grid .review-body {
+    padding: 12px 16px;
+  }
+
+  .trow.emp-grid .review-body .field-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+    gap: 10px;
+  }
+
+  .trow.emp-grid .review-body .field-row:last-child {
+    border-bottom: none;
+  }
+
+  .trow.emp-grid .review-body .field-row .label {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .trow.emp-grid .review-body .field-row .value {
+    font-size: 14px;
+    color: var(--ink);
+    text-align: right;
+    word-break: break-word;
+    flex: 1;
+  }
+
+  .trow.emp-grid .review-body .field-row .value .department-pill {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--blue-50);
+    color: var(--blue-700);
+  }
+
+  /* Status badge */
+  .trow.emp-grid .review-body .field-row .status-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .status-badge.top-performer {
+    background: rgba(16, 185, 129, 0.12);
+    color: #0f9d6f;
+  }
+
+  .status-badge.outstanding {
+    background: rgba(6, 182, 212, 0.12);
+    color: #0891b2;
+  }
+
+  .status-badge.needs-improvement {
+    background: rgba(239, 68, 68, 0.12);
+    color: #e0453f;
+  }
+
+  /* Review footer - actions */
+  .trow.emp-grid .review-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--panel-2);
+    border-top: 1px solid var(--line);
+  }
+
+  .trow.emp-grid .review-footer .btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    border-radius: 8px;
+    min-height: 38px;
+    min-width: 70px;
+  }
+
+  .trow.emp-grid .review-footer .btn.ghost {
+    background: transparent;
+    color: var(--blue-700);
+    border: 1px solid var(--line);
+  }
+
+  .trow.emp-grid .review-footer .btn.ghost:hover {
+    background: var(--blue-50);
+  }
+
+  .trow.emp-grid .review-footer .btn.primary {
+    background: var(--blue-600);
+    color: white;
+  }
+
+  .trow.emp-grid .review-footer .btn.primary:hover {
+    background: var(--blue-700);
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 400px) {
+  .trow.emp-grid .review-header {
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .trow.emp-grid .review-header .emp-info .name {
+    font-size: 14px;
+  }
+
+  .trow.emp-grid .review-header .rating-badge {
+    align-self: flex-start;
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+
+  .trow.emp-grid .review-body {
+    padding: 10px 12px;
+  }
+
+  .trow.emp-grid .review-body .field-row {
+    padding: 5px 0;
+  }
+
+  .trow.emp-grid .review-body .field-row .label {
+    min-width: 70px;
+    font-size: 10px;
+  }
+
+  .trow.emp-grid .review-body .field-row .value {
+    font-size: 13px;
+  }
+
+  .trow.emp-grid .review-footer {
+    padding: 10px 12px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .trow.emp-grid .review-footer .btn {
+    width: 100%;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 13px;
+    min-height: 36px;
+  }
+}
+
+/* Tablet size adjustments */
+@media (min-width: 681px) and (max-width: 900px) {
+  .emp-grid {
+    grid-template-columns: 1.8fr 1.2fr 0.8fr 1fr auto;
+    gap: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .emp-grid .btn.sm {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+
+  .emp-grid .who-cell .nm {
+    font-size: 13px;
+    max-width: 120px;
+  }
+}
+
+/* Performance Tabs - Mobile */
+@media (max-width: 680px) {
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 13px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+  }
+
+  .tab.active {
+    background: var(--blue-600);
+    color: #fff;
+    border-color: var(--blue-600);
+  }
+
+  .tab:not(.active):hover {
+    background: var(--hover);
+  }
+}
+
+/* Toolbar - Mobile */
+@media (max-width: 680px) {
+  .toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toolbar .search {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .toolbar .select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* KPI Cards - Mobile */
+@media (max-width: 680px) {
+  .kpis {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .kpi {
+    padding: 14px;
+  }
+
+  .kpi .kval {
+    font-size: 22px;
+  }
+
+  .kpi .klab {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+}
